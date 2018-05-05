@@ -1,6 +1,7 @@
 # Go based libary for dealing with Claymore Miner's API
 ## Usage
 `go get github.com/buni/claymore-stats`
+
 The package exposes five functions:<br>
 
 GetConsole(url,password) - Get miner's console output.<br>
