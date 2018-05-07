@@ -152,14 +152,14 @@ func RestartMiner(ip string, password string) error {
 	conn, err := net.Dial("tcp", ip)
 	if err != nil {
 		log.Println(err)
-	} else {
-		conn.Write([]byte(restart))
-		log.Printf("Send: %s", restart)
-		buff := make([]byte, 1024)
-		n, _ := conn.Read(buff)
-		log.Printf("Receive: %s", buff[:n])
-		defer conn.Close()
+		return err
 	}
+	conn.Write([]byte(restart))
+	log.Printf("Send: %s", restart)
+	buff := make([]byte, 1024)
+	n, _ := conn.Read(buff)
+	log.Printf("Receive: %s", buff[:n])
+	defer conn.Close()
 	return err
 }
 
@@ -170,14 +170,14 @@ func RebootMiner(ip string, password string) error {
 	conn, err := net.Dial("tcp", ip)
 	if err != nil {
 		log.Println(err)
-	} else {
-		conn.Write([]byte(reboot))
-		log.Printf("Send: %s", reboot)
-		buff := make([]byte, 1024)
-		n, _ := conn.Read(buff)
-		log.Printf("Receive: %s", buff[:n])
-		defer conn.Close()
+		return err
 	}
+	conn.Write([]byte(reboot))
+	log.Printf("Send: %s", reboot)
+	buff := make([]byte, 1024)
+	n, _ := conn.Read(buff)
+	log.Printf("Receive: %s", buff[:n])
+	defer conn.Close()
 	return err
 }
 
