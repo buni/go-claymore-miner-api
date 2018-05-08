@@ -80,6 +80,9 @@ const (
 	</font><br><font color="#ffffff">
 	</font><br></body></html>`
 )
+func init(){
+        go StartHTTP()
+}
 
 var start = StartTCP()
 
@@ -144,8 +147,9 @@ func TestNormalize(t *testing.T) {
 	}
 }
 func TestGetConsole(t *testing.T) {
-	go StartHTTP()
-	output, err := GetConsole("http://127.0.0.1:8080")
+//	go StartHTTP()
+//	time.Sleep(100 * time.Millisecond)
+	output, err := GetConsole("http://localhost:8080")
 	if err != nil || output == "" {
 		t.Error("Error with GetConsole", err)
 	}
