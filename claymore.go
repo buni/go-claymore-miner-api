@@ -22,14 +22,14 @@ const (
 	restart = `{"id":0,"jsonrpc":"2.0","method":"miner_restart","psw":""}`
 )
 
-//JSON input
+// JSON input
 type JSON struct {
 	ID     int         `json:"id"`
 	Error  interface{} `json:"error"`
 	Result []string    `json:"result"`
 }
 
-//Stats struct
+// Stats struct
 type Stats struct {
 	Version    string    `json:"version"`
 	Runtime    string    `json:"runtime"`
@@ -42,21 +42,21 @@ type Stats struct {
 	// PoolSharesObj []PoolShares `json:"poolshares"`
 }
 
-//Shares struct
+// Shares struct
 type Shares struct {
 	TotalHash int `json:"totalhash"`
 	Accepted  int `json:"accepted"`
 	Rejected  int `json:"rejected"`
 }
 
-//SharesD Dual mining shares struct
+// SharesD Dual mining shares struct
 type SharesD struct {
 	TotalHash int `json:"totalhash"`
 	Accepted  int `json:"accepted"`
 	Rejected  int `json:"rejected"`
 }
 
-//GPUMain main algo hashrate for each gpu
+// GPUMain main algo hashrate for each gpu
 type GPUMain struct {
 	Hashrate int `json:"hashrate"`
 }
@@ -66,13 +66,13 @@ type GPUDual struct {
 	Hashrate int `json:"hashrate"`
 }
 
-//Termals gpu termals & fan speed
+// Termals gpu termals & fan speed
 type Termals struct {
 	Temp int `json:"temp"`
 	Fan  int `json:"fan"`
 }
 
-//Pools struct
+// Pools struct
 type Pools struct {
 	Pool string `json:"pool"`
 }
@@ -82,7 +82,7 @@ type Pools struct {
 // 	PoolSwtiches int `json:"poolswitches"`
 // }
 
-//GetConsole output
+// GetConsole output
 func GetConsole(url string) (sa string, err error) {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -99,7 +99,7 @@ func GetConsole(url string) (sa string, err error) {
 	return sa, err
 }
 
-//Sanitize the console output
+// Sanitize the console output
 func sanitize(hts string) (res string) {
 	doc, err := html.Parse(strings.NewReader(hts))
 	if err != nil {
@@ -117,7 +117,7 @@ func sanitize(hts string) (res string) {
 	return
 }
 
-//removeScript tag
+// removeScript tag
 func removeScript(n *html.Node) {
 	if n.Type == html.ElementNode && n.Data == "script" || n.Data == "head" {
 		n.Parent.RemoveChild(n)
@@ -128,7 +128,7 @@ func removeScript(n *html.Node) {
 	}
 }
 
-//GetStats get miner's stats
+// GetStats get miner's stats
 func GetStats(ip string, password string) (stat Stats, err error) {
 	d := &net.Dialer{Timeout: time.Duration(5) * time.Millisecond}
 	stats := `{"id":0,"jsonrpc":"2.0","method":"miner_getstat1","psw":"` + password + `"}`
@@ -146,7 +146,7 @@ func GetStats(ip string, password string) (stat Stats, err error) {
 	return
 }
 
-//RestartMiner restart the miner(do not use it crashesh the miner more often then not)
+// RestartMiner restart the miner(do not use it crashesh the miner more often then not)
 func RestartMiner(ip string, password string) error {
 	restart := `{"id":0,"jsonrpc":"2.0","method":"miner_restart","psw":"` + password + `"}`
 	conn, err := net.Dial("tcp", ip)
@@ -163,7 +163,7 @@ func RestartMiner(ip string, password string) error {
 	return err
 }
 
-//RebootMiner reboots the miner(if there is no restart.sh/bat/bash it restarts the miner)
+// RebootMiner reboots the miner(if there is no restart.sh/bat/bash it restarts the miner)
 func RebootMiner(ip string, password string) error {
 	reboot := `{"id":0,"jsonrpc":"2.0","method":"miner_reboot","psw":"` + password + `"}`
 
@@ -186,7 +186,7 @@ func RebootMiner(ip string, password string) error {
 //"0;0;0", "off;off;off;off;off;off", "53;71;57;67;61;72;55;70;59;71;61;70",
 //"eth-eu1.nanopool.org:9999", "0;0;0;0"]
 
-//Normalize make the json useful
+// Normalize make the json useful
 func Normalize(buff []byte) (stat Stats) {
 	data := JSON{}
 	json.Unmarshal(buff, &data)
@@ -228,7 +228,7 @@ func Normalize(buff []byte) (stat Stats) {
 	return
 }
 
-//castShares
+// castShares
 func castShares(data string) (shares Shares) {
 	x := strings.Split(data, ";")
 	h, _ := strconv.Atoi(x[0])
@@ -240,7 +240,7 @@ func castShares(data string) (shares Shares) {
 	return
 }
 
-//castGPUMain
+// castGPUMain
 func castGPUMain(data string) (gpumains []GPUMain) {
 	var gpumain GPUMain
 	x := strings.Split(data, ";")
@@ -252,7 +252,7 @@ func castGPUMain(data string) (gpumains []GPUMain) {
 	return
 }
 
-//castSharesD
+// castSharesD
 func castSharesD(data string) (shares SharesD, err error) {
 
 	x := strings.Split(data, ";")
@@ -262,7 +262,7 @@ func castSharesD(data string) (shares SharesD, err error) {
 	return shares, err
 }
 
-//castGPUDual
+// castGPUDual
 func castGPUDual(data string) (gpuduals []GPUDual, err error) {
 	var gpudual GPUDual
 	x := strings.Split(data, ";")
@@ -277,7 +277,7 @@ func castGPUDual(data string) (gpuduals []GPUDual, err error) {
 	return gpuduals, err
 }
 
-//castTermals
+// castTermals
 func castTermals(data string) (tss []Termals) {
 	// data = `53;71;57;67;61;72;55;70;59;71;59;71;53;71;57;67;61;72;55;70;59;71;59;71`
 	var ts Termals
@@ -299,7 +299,7 @@ func castTermals(data string) (tss []Termals) {
 	return
 }
 
-//castPools
+// castPools
 func castPools(data string) (pools []Pools) {
 	var pool Pools
 	x := strings.Split(data, ";")
