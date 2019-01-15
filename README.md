@@ -1,4 +1,4 @@
-# Go based libary for dealing with Claymore Miner's API
+# Go Claymore Miner Client 
 ## Usage
 `go get github.com/buni/claymore-stats`
 
